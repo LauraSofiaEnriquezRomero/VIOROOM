@@ -1,0 +1,35 @@
+Nombre del Objeto ;Descripcion;Categoria
+Info_Atril_bombas;Dispositivo programable para administrar soluciones o fármacos por via intravenosa de manera controlada. (Resolucion 3100 de 2019);Dotacion
+Info_Calentador_de_mantas_;Equipo utilizado para mantener la temperatura corporal del paciente y prevenir hipotermia intraoperatoria. (Guia Minsalud GPC-hipotermia);Dotacion
+Info_Carro_medico_Gen;Unidad movil con insumos medicos de uso general durante la atencion en el quirofano. (Resolucion 3100 de 2019);Dotacion
+Info_Carro_medico_paro;Contiene insumos y medicamentos para atencion inmediata de emergencias, incluyendo desfibrilador. (Resolucion 3100 de 2019);Dotacion
+Info_Cielitica;Lámpara quirúrgica que proporciona iluminacion intensa y sin sombras sobre el campo operatorio. (Resolucion 3100 de 2019);Dotacion
+Info_Desfibrilador;Equipo que administra una descarga electrica al corazon para tratar arritmias o paro cardiaco. (Resolucion 3100 de 2019);Dotacion
+Info_Electrobisturi;Equipo quirúrgico que permite cortar y coagular tejido usando corriente electrica. (Resolucion 3100 de 2019);Dotacion
+Info_Mesa_auxiliar_Rincon;Mesa secundaria ubicada en el quirofano para apoyo de insumos o instrumental no esteril. (uso tecnico habitual);Dotacion
+Info_Mesa_de_cirugia;Mesa quirúrgica regulable para posicionar al paciente durante la intervencion, compatible con imagenologia. (Resolucion 3100 de 2019);Dotacion
+Info_Mesa_mayo;Mesa movil cercana al campo operatorio donde se ubican instrumentos esteriles durante el procedimiento. (Resolucion 3100 de 2019);Dotacion
+Info_Monitor_Esclava_1;Monitor que replica los signos vitales del monitor principal para visualizacion desde otros ángulos. (uso tecnico habitual);Dotacion
+Info_Monitor_pared;Monitor fijo en pared utilizado para mostrar signos vitales o imágenes diagnosticas. (uso tecnico habitual);Dotacion
+Info_Monitor_signos_vitales;Monitor multiparámetro que registra frecuencia cardiaca, presion arterial, oximetria, temperatura, entre otros. (Resolucion 3100 de 2019);Dotacion
+Info_Riñonera;Mesa auxiliar con forma curva (media luna) usada para ubicar instrumental cerca del equipo medico. (definicion tecnica habitual);Dotacion
+Info_Sillas;Mobiliario para uso del personal medico durante procedimientos prolongados o en pausas. (uso tecnico habitual);Dotacion
+Info_Unidad_de_succion;Equipo para aspiracion de fluidos durante procedimientos quirúrgicos. (Resolucion 3100 de 2019);Dotacion
+Info_Basuras;Recipientes diferenciados para residuos hospitalarios según codigo de colores. (Decreto 351 de 2014);Infraestructura
+Info_Gases;"Tomas de gases medicinales como oxigeno, aire medicinal y vacio; deben estar claramente identificadas. (Resolucion 3100 de 2019)";Infraestructura
+Info_Media_caña;Acabado sanitario en esquinas entre piso, techo y paredes que facilita la limpieza y evita acumulacion de suciedad. (Resolucion 3100 de 2019);Infraestructura
+Info_Pendant_Anestesia;Columna suspendida que organiza tomas de gases, energia y datos para equipos de anestesia. (Resolucion 3100 de 2019);Infraestructura
+Info_Pendant_endoscopia;Unidad colgante para soporte de equipos de endoscopia, mejorando ergonomia y organizacion. (Resolucion 3100 de 2019);Infraestructura
+Info_Puerta_1;Las puertas deben tener visor para ver el interior sin abrir y permitir paso de camillas. (Resolucion 3100 de 2019);Infraestructura
+Info_termohigrometro;"Dispositivo que mide temperatura y humedad; el quirofano debe mantenerse entre 20-24?°C y 40-60?% de humedad. (Resolucion 3100 de 2019)";Infraestructura
+Info_Windows;"Las ventanas deben ser fijas o hermeticas para evitar contaminacion cruzada; no deben permitir entrada de aire sin control. (Resolucion 3100 de 2019)";Infraestructura
+Info_alarma_de_gases;Sistema que alerta sobre fallas o irregularidades en la presion y flujo de gases medicinales. (Resolucion 1441 de 2013);Seguridad electrica
+Info_tomac;Receptáculos electricos ubicados a más de 1.53 m del suelo, minimo 36 por quirofano, en buen estado. (Resolucion 3100 de 2019);Seguridad electrica
+;;
+;;
+;;
+;;
+;;
+;;
+;;
+;;
