@@ -21,6 +21,18 @@ public class MostrarInfoObjeto : MonoBehaviour
         }
     }
 
+    private void ManejarSeleccionXR(SelectEnterEventArgs args)
+    {
+        MostrarInformacion();
+
+        // 🔹 Reiniciar el conteo SIEMPRE que el usuario interactúe con un objeto
+        ProgresoInspeccion progreso = FindObjectOfType<ProgresoInspeccion>();
+        if (progreso != null)
+        {
+            progreso.IniciarConteo();
+        }
+    }
+
     public void MostrarInformacion()
     {
         if (infoObjeto == null || textoNombre == null || textoCategoria == null || textoDescripcion == null || panelInfo == null)
@@ -43,11 +55,6 @@ public class MostrarInfoObjeto : MonoBehaviour
                     obj.SetActive(false);
             }
         }
-    }
-
-    private void ManejarSeleccionXR(SelectEnterEventArgs args)
-    {
-        MostrarInformacion();
     }
 
     public void EjecutarDesdeInspector()

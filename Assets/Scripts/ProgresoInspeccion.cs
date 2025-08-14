@@ -1,19 +1,18 @@
-using System.Collections.Generic;
 using UnityEngine;
-
 
 public class ProgresoInspeccion : MonoBehaviour
 {
     [Header("Configuración")]
-    public int objetosNecesarios = 10;
-    public GameObject panelPopup; // popup que aparece al completar
-    public bool pausarConTimeScale = true;
+    public GameObject panelPopup; // Panel que aparece al pasar el tiempo
     public bool desactivarInteractors = true;
+    public float tiempoEspera = 30f; // Segundos antes de mostrar panel
+    public GeneradorFallas generadorFallas;
 
-    private HashSet<string> objetosVisitados = new HashSet<string>();
+    private bool yaUsoSeguirExplorando = false;
+    private float tiempoRestante;
     private UnityEngine.XR.Interaction.Toolkit.Interactors.XRBaseInteractor[] cachedInteractors;
 
-    void Start()
+    private void Start()
     {
         if (panelPopup != null)
             panelPopup.SetActive(false);
@@ -22,26 +21,27 @@ public class ProgresoInspeccion : MonoBehaviour
             cachedInteractors = FindObjectsOfType<UnityEngine.XR.Interaction.Toolkit.Interactors.XRBaseInteractor>();
     }
 
-    // Llamar desde MostrarInfoObjeto (por ejemplo) con un id único
-    public void RegistrarObjeto(string idObjeto)
+    public void IniciarConteo()
     {
-        if (string.IsNullOrEmpty(idObjeto)) return;
-
-        if (!objetosVisitados.Contains(idObjeto))
-        {
-            objetosVisitados.Add(idObjeto);
-            Debug.Log($"[Progreso] Registrado: {idObjeto}  Total: {objetosVisitados.Count}/{objetosNecesarios}");
-        }
-
-        if (objetosVisitados.Count >= objetosNecesarios)
-            ActivarPopup();
+        tiempoRestante = tiempoEspera;
+        CancelInvoke(nameof(ContarTiempo)); // Reinicia si ya estaba contando
+        InvokeRepeating(nameof(ContarTiempo), 1f, 1f);
+        Debug.Log("[Progreso] Conteo iniciado/reiniciado");
     }
 
-    void ActivarPopup()
+    private void ContarTiempo()
     {
-        Debug.Log("[Progreso] Objetos alcanzados. Mostrando popup.");
-        if (pausarConTimeScale) Time.timeScale = 0f;
+        tiempoRestante -= 1f;
 
+        if (tiempoRestante <= 0)
+        {
+            CancelInvoke(nameof(ContarTiempo));
+            MostrarPopup();
+        }
+    }
+
+    private void MostrarPopup()
+    {
         if (desactivarInteractors && cachedInteractors != null)
         {
             foreach (var it in cachedInteractors)
@@ -52,11 +52,17 @@ public class ProgresoInspeccion : MonoBehaviour
             panelPopup.SetActive(true);
     }
 
-    // Conectar al botón Iniciar del popup
-    public void ContinuarAFase2()
+    // Botón "Seguir Explorando"
+    public void SeguirExplorando()
     {
-        Debug.Log("[Progreso] Continuando a Fase 2...");
-        if (pausarConTimeScale) Time.timeScale = 1f;
+        if (yaUsoSeguirExplorando)
+        {
+            IniciarFase2();
+            return;
+        }
+
+        yaUsoSeguirExplorando = true;
+        panelPopup.SetActive(false);
 
         if (desactivarInteractors && cachedInteractors != null)
         {
@@ -64,19 +70,26 @@ public class ProgresoInspeccion : MonoBehaviour
                 if (it != null) it.enabled = true;
         }
 
-        if (panelPopup != null)
-            panelPopup.SetActive(false);
-
-        // Lanzar generador de fallas
-        var gen = FindObjectOfType<GeneradorFallas>();
-        if (gen != null) gen.IniciarFase2();
-        else Debug.LogWarning("[Progreso] No se encontró GeneradorFallas en escena.");
+        // Reinicia el conteo por última vez
+        tiempoRestante = tiempoEspera;
+        CancelInvoke(nameof(ContarTiempo));
+        InvokeRepeating(nameof(ContarTiempo), 1f, 1f);
     }
 
-    // método público para reiniciar progreso (si quieres)
-    public void ResetProgreso()
+    // Botón "Iniciar Fase 2"
+    public void IniciarFase2()
     {
-        objetosVisitados.Clear();
-        Debug.Log("[Progreso] Reiniciado.");
+        panelPopup.SetActive(false);
+
+        if (desactivarInteractors && cachedInteractors != null)
+        {
+            foreach (var it in cachedInteractors)
+                if (it != null) it.enabled = true;
+        }
+
+        if (generadorFallas != null)
+            generadorFallas.IniciarFase2();
+        else
+            Debug.LogWarning("[Progreso] No se encontró GeneradorFallas en escena.");
     }
 }

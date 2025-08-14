@@ -21,7 +21,7 @@ public class GeneradorFallas : MonoBehaviour
 
     public void IniciarFase2()
     {
-        Debug.Log("[GeneradorFallas] Iniciar Fase2");
+        Debug.Log("[GeneradorFallas] Iniciar Fase 2");
         DesactivarTodas();
         activadas.Clear();
 

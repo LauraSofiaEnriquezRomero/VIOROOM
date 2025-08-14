@@ -19,16 +19,18 @@ public class FallaInteractiva : MonoBehaviour
     private GameObject objetoInstanciado;
     private Renderer objetoRenderer;
     private bool fallaActiva = false;
+    private Material materialOriginal;
 
     private void Awake()
     {
         if (objetoObjetivo != null)
+        {
             objetoRenderer = objetoObjetivo.GetComponent<Renderer>();
+            if (objetoRenderer != null)
+                materialOriginal = objetoRenderer.sharedMaterial;
+        }
     }
 
-    /// <summary>
-    /// Activa la falla según su tipo configurado.
-    /// </summary>
     public void ActivarFalla()
     {
         if (fallaActiva) return;
@@ -45,18 +47,13 @@ public class FallaInteractiva : MonoBehaviour
                 {
                     if (nuevoMaterial != null)
                     {
-                        // Aplica un nuevo material completo
                         objetoRenderer.material = new Material(nuevoMaterial);
                     }
                     else if (nuevaTexture != null)
                     {
-                        // Copia el material actual y le aplica la nueva textura
-                        Material mat;
-                        if (objetoRenderer.sharedMaterial != null)
-                            mat = new Material(objetoRenderer.sharedMaterial);
-                        else
-                            mat = new Material(Shader.Find("Standard"));
-
+                        Material mat = materialOriginal != null
+                            ? new Material(materialOriginal)
+                            : new Material(Shader.Find("Standard"));
                         mat.mainTexture = nuevaTexture;
                         objetoRenderer.material = mat;
                     }
@@ -68,7 +65,6 @@ public class FallaInteractiva : MonoBehaviour
                 {
                     Vector3 pos = objetoObjetivo.transform.position;
                     Quaternion rot = objetoObjetivo.transform.rotation;
-
                     objetoObjetivo.SetActive(false);
                     objetoInstanciado = Instantiate(nuevoPrefab, pos, rot);
                 }
@@ -78,9 +74,6 @@ public class FallaInteractiva : MonoBehaviour
         fallaActiva = true;
     }
 
-    /// <summary>
-    /// Restaura el estado original del objeto.
-    /// </summary>
     public void RestaurarFalla()
     {
         if (!fallaActiva) return;
@@ -93,11 +86,8 @@ public class FallaInteractiva : MonoBehaviour
                 break;
 
             case TipoFalla.CambiarMaterial:
-                if (objetoRenderer != null)
-                {
-                    // Restaura el material original
-                    objetoRenderer.material = objetoRenderer.sharedMaterial;
-                }
+                if (objetoRenderer != null && materialOriginal != null)
+                    objetoRenderer.material = materialOriginal;
                 break;
 
             case TipoFalla.CambiarObjeto:
