@@ -12,6 +12,8 @@ public class MostrarInfoObjeto : MonoBehaviour
     public Text textoDescripcion;
     public GameObject[] objetosADesactivar;
 
+    private bool primerClickRegistrado = false;
+
     private void Start()
     {
         var interactable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable>();
@@ -23,18 +25,38 @@ public class MostrarInfoObjeto : MonoBehaviour
 
     private void ManejarSeleccionXR(SelectEnterEventArgs args)
     {
-        MostrarInformacion();
-
-        // 🔹 Reiniciar el conteo SIEMPRE que el usuario interactúe con un objeto
-        ProgresoInspeccion progreso = FindObjectOfType<ProgresoInspeccion>();
-        if (progreso != null)
+        if (GeneradorFallas.faseActual == FaseSimulacion.Exploracion)
         {
-            progreso.IniciarConteo();
+            // ✅ Solo en exploración se muestra el panel
+            MostrarInformacion();
+
+            if (!primerClickRegistrado)
+            {
+                ProgresoInspeccion progreso = FindObjectOfType<ProgresoInspeccion>();
+                if (progreso != null)
+                {
+                    progreso.IniciarConteo();
+                    primerClickRegistrado = true;
+                }
+            }
         }
+        else if (GeneradorFallas.faseActual == FaseSimulacion.Evaluacion)
+        {
+            Debug.Log($"[Evaluación] Objeto {gameObject.name} seleccionado por el usuario.");
+
+            // ✅ Registrar selección en el gestor
+            if (GestorEvaluacion.instancia != null)
+                GestorEvaluacion.instancia.RegistrarSeleccion(gameObject);
+        }
+
     }
 
     public void MostrarInformacion()
     {
+        // 🔒 Seguridad extra: nunca mostrar info en Evaluación
+        if (GeneradorFallas.faseActual != FaseSimulacion.Exploracion)
+            return;
+
         if (infoObjeto == null || textoNombre == null || textoCategoria == null || textoDescripcion == null || panelInfo == null)
         {
             Debug.LogWarning($"Faltan referencias en {gameObject.name}");
@@ -59,6 +81,7 @@ public class MostrarInfoObjeto : MonoBehaviour
 
     public void EjecutarDesdeInspector()
     {
+        //  Si quieres probar desde inspector, ignora fase
         MostrarInformacion();
     }
 }

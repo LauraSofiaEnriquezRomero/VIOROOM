@@ -63,20 +63,20 @@ public class OutlineSelection : MonoBehaviour
                 highlight = null;
 
                 GameObject seleccionado = selection.gameObject;
+
                 if (!objetosSeleccionados.Contains(seleccionado))
                 {
                     objetosSeleccionados.Add(seleccionado);
                     Debug.Log("Objeto guardado: " + seleccionado.name);
+
+                    // 🔹 Enviar al GestorEvaluacion (solo en fase de Evaluación)
+                    if (GeneradorFallas.faseActual == FaseSimulacion.Evaluacion && GestorEvaluacion.instancia != null)
+                    {
+                        GestorEvaluacion.instancia.RegistrarSeleccion(seleccionado);
+                    }
                 }
 
                 var mostrarInfo = seleccionado.GetComponent<MostrarInfoObjeto>();
-
-                // Oculta el panel anterior si es diferente
-                // if (panelAnterior != null && panelAnterior != mostrarInfo)
-                // {
-                //     panelAnterior.OcultarInformacion();
-                // }
-
                 if (mostrarInfo != null)
                 {
                     mostrarInfo.MostrarInformacion();
@@ -90,13 +90,6 @@ public class OutlineSelection : MonoBehaviour
                     selection.gameObject.GetComponent<Outline>().enabled = false;
                     selection = null;
                 }
-
-                // Si se hace clic en un espacio vacío, ocultar el panel actual
-                // if (panelAnterior != null)
-                // {
-                //     panelAnterior.OcultarInformacion();
-                //     panelAnterior = null;
-                // }
             }
         }
     }
