@@ -74,6 +74,12 @@ public class OutlineSelection : MonoBehaviour
                     {
                         GestorEvaluacion.instancia.RegistrarSeleccion(seleccionado);
                     }
+
+                    // 🔹 Notificar al Recorrido Guiado
+                    if (RecorridoGuiado.instancia != null)
+                    {
+                        RecorridoGuiado.instancia.RegistrarClick(seleccionado);
+                    }
                 }
 
                 var mostrarInfo = seleccionado.GetComponent<MostrarInfoObjeto>();
