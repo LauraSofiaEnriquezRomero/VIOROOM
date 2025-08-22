@@ -19,7 +19,10 @@ public class OutlineSelection : MonoBehaviour
         // Quitar highlight anterior
         if (highlight != null)
         {
-            highlight.gameObject.GetComponent<Outline>().enabled = false;
+            var outlineOld = highlight.GetComponent<Outline>();
+            if (outlineOld != null)
+                outlineOld.enabled = false;
+
             highlight = null;
         }
 
@@ -30,17 +33,14 @@ public class OutlineSelection : MonoBehaviour
             highlight = raycastHit.transform;
             if (highlight.CompareTag("Selectable") && highlight != selection)
             {
-                if (highlight.gameObject.GetComponent<Outline>() != null)
+                Outline outline = highlight.GetComponent<Outline>();
+                if (outline == null)
                 {
-                    highlight.gameObject.GetComponent<Outline>().enabled = true;
-                }
-                else
-                {
-                    Outline outline = highlight.gameObject.AddComponent<Outline>();
-                    outline.enabled = true;
+                    outline = highlight.gameObject.AddComponent<Outline>();
                     outline.OutlineColor = Color.magenta;
                     outline.OutlineWidth = 7.0f;
                 }
+                outline.enabled = true;
             }
             else
             {
@@ -53,13 +53,20 @@ public class OutlineSelection : MonoBehaviour
         {
             if (highlight)
             {
+                // Quitar outline del anterior
                 if (selection != null)
                 {
-                    selection.gameObject.GetComponent<Outline>().enabled = false;
+                    var outlineSel = selection.GetComponent<Outline>();
+                    if (outlineSel != null)
+                        outlineSel.enabled = false;
                 }
 
+                // Asignar nueva selección
                 selection = raycastHit.transform;
-                selection.gameObject.GetComponent<Outline>().enabled = true;
+                var outlineNew = selection.GetComponent<Outline>();
+                if (outlineNew != null)
+                    outlineNew.enabled = true;
+
                 highlight = null;
 
                 GameObject seleccionado = selection.gameObject;
@@ -82,19 +89,37 @@ public class OutlineSelection : MonoBehaviour
                     }
                 }
 
+                // ✅ Mostrar panel de información
                 var mostrarInfo = seleccionado.GetComponent<MostrarInfoObjeto>();
                 if (mostrarInfo != null)
                 {
+                    // 🔹 Cerrar el panel anterior si existía
+                    if (panelAnterior != null && panelAnterior != mostrarInfo)
+                    {
+                        panelAnterior.CerrarPanel();
+                    }
+
                     mostrarInfo.MostrarInformacion();
                     panelAnterior = mostrarInfo;
                 }
             }
             else
             {
+                // Si hago click afuera, deselecciono
                 if (selection)
                 {
-                    selection.gameObject.GetComponent<Outline>().enabled = false;
+                    var outlineSel = selection.GetComponent<Outline>();
+                    if (outlineSel != null)
+                        outlineSel.enabled = false;
+
                     selection = null;
+                }
+
+                // 🔹 Cerrar panel si hago click afuera
+                if (panelAnterior != null)
+                {
+                    panelAnterior.CerrarPanel();
+                    panelAnterior = null;
                 }
             }
         }

@@ -3,6 +3,7 @@ using UnityEngine;
 public class CerrarPanel : MonoBehaviour
 {
     public GameObject panelInfo;
+    [HideInInspector] public MostrarInfoObjeto objetoAsociado; // 🔗 Script que abrió el panel
 
     public void CerrarPanelDesdeBoton()
     {
@@ -10,6 +11,12 @@ public class CerrarPanel : MonoBehaviour
         {
             panelInfo.SetActive(false);
             Debug.Log("Panel cerrado desde el botón.");
+
+            // 🔥 Restaurar los objetos del script que lo abrió
+            if (objetoAsociado != null)
+            {
+                objetoAsociado.RestaurarObjetos();
+            }
         }
         else
         {

@@ -27,7 +27,6 @@ public class MostrarInfoObjeto : MonoBehaviour
     {
         if (GeneradorFallas.faseActual == FaseSimulacion.Exploracion)
         {
-            // ✅ Solo en exploración se muestra el panel
             MostrarInformacion();
 
             if (!primerClickRegistrado)
@@ -43,17 +42,13 @@ public class MostrarInfoObjeto : MonoBehaviour
         else if (GeneradorFallas.faseActual == FaseSimulacion.Evaluacion)
         {
             Debug.Log($"[Evaluación] Objeto {gameObject.name} seleccionado por el usuario.");
-
-            // ✅ Registrar selección en el gestor
             if (GestorEvaluacion.instancia != null)
                 GestorEvaluacion.instancia.RegistrarSeleccion(gameObject);
         }
-
     }
 
     public void MostrarInformacion()
     {
-        // 🔒 Seguridad extra: nunca mostrar info en Evaluación
         if (GeneradorFallas.faseActual != FaseSimulacion.Exploracion)
             return;
 
@@ -79,9 +74,29 @@ public class MostrarInfoObjeto : MonoBehaviour
         }
     }
 
+    public void RestaurarObjetos()
+    {
+        if (objetosADesactivar != null)
+        {
+            foreach (var obj in objetosADesactivar)
+            {
+                if (obj != null)
+                    obj.SetActive(true);
+            }
+        }
+    }
+
+    // ✅ Nuevo método: Cerrar el panel y restaurar objetos
+    public void CerrarPanel()
+    {
+        if (panelInfo != null)
+            panelInfo.SetActive(false);
+
+        RestaurarObjetos();
+    }
+
     public void EjecutarDesdeInspector()
     {
-        //  Si quieres probar desde inspector, ignora fase
         MostrarInformacion();
     }
 }

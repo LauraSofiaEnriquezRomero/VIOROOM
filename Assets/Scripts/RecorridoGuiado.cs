@@ -1,17 +1,26 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class RecorridoGuiado : MonoBehaviour
 {
     public static RecorridoGuiado instancia;
 
     [Header("Prefab de Partículas (Highlight)")]
-    public ParticleSystem particlePrefab;      // ← arrastra PS_ObjetivoGuia aquí
+    public ParticleSystem particlePrefab;      
     public Vector3 offset = new Vector3(0, 1.5f, 0);   // Altura sobre el objeto
     public bool pegarAlObjeto = true;                 // Parent al target
 
     [Header("Lista (en orden) de objetos a guiar")]
     public List<GameObject> objetosImportantes = new List<GameObject>();
+
+    [Header("UI de Progreso")]
+    public GameObject panelProgreso;   
+    public Text textoProgreso;         
+
+    [Header("Eventos")]
+    public UnityEvent OnRecorridoCompleto;
 
     private int indiceActual = 0;
     private ParticleSystem psActual;
@@ -24,16 +33,14 @@ public class RecorridoGuiado : MonoBehaviour
 
     private void Start()
     {
-        // Si ya tienes la lista, iniciamos
+        if (panelProgreso != null) panelProgreso.SetActive(false);
+
         if (objetosImportantes != null && objetosImportantes.Count > 0)
             MostrarSiguiente();
         else
             Debug.LogWarning("[RecorridoGuiado] No hay objetos en la lista 'objetosImportantes'.");
     }
 
-    /// <summary>
-    /// Llamado por OutlineSelection (o sistema de clicks) cuando el usuario selecciona algún objeto.
-    /// </summary>
     public void RegistrarClick(GameObject obj)
     {
         if (objetivoActual == null)
@@ -53,15 +60,13 @@ public class RecorridoGuiado : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Muestra el efecto de partículas sobre el siguiente objetivo.
-    /// </summary>
     private void MostrarSiguiente()
     {
         if (indiceActual >= objetosImportantes.Count)
         {
             Debug.Log("[RecorridoGuiado] Recorrido terminado ✅");
-            // Aquí puedes disparar el siguiente paso (por ejemplo abrir un panel o iniciar evaluación).
+            MostrarPanelProgreso();
+            OnRecorridoCompleto?.Invoke();
             return;
         }
 
@@ -74,22 +79,31 @@ public class RecorridoGuiado : MonoBehaviour
             return;
         }
 
-        // Instanciar/posicionar partículas
+        // Instanciar o reusar partículas
         if (particlePrefab != null)
         {
-            // Si ya existe, destruir para recrear en nueva pos
-            if (psActual != null) Destroy(psActual.gameObject);
-
-            psActual = Instantiate(particlePrefab, GetPosicionHighlight(objetivoActual), Quaternion.identity);
+            if (psActual == null)
+            {
+                psActual = Instantiate(particlePrefab, GetPosicionHighlight(objetivoActual), Quaternion.identity);
+            }
+            else
+            {
+                psActual.gameObject.SetActive(true);
+                psActual.transform.position = GetPosicionHighlight(objetivoActual);
+            }
 
             if (pegarAlObjeto)
             {
                 psActual.transform.SetParent(objetivoActual.transform, true);
-                psActual.transform.localPosition = offset; // relativo al objeto
+                psActual.transform.localPosition = offset;
+            }
+            else
+            {
+                psActual.transform.SetParent(null);
             }
 
             var main = psActual.main;
-            main.loop = true; // Asegurar looping
+            main.loop = true;
             psActual.Play();
 
             Debug.Log($"[RecorridoGuiado] → Mostrando partículas en: {objetivoActual.name}");
@@ -98,44 +112,39 @@ public class RecorridoGuiado : MonoBehaviour
         {
             Debug.LogError("[RecorridoGuiado] particlePrefab es NULL. Asigna el prefab de partículas en el Inspector.");
         }
+
+        ActualizarUI();
     }
 
-    /// <summary>
-    /// Avanza al siguiente objetivo y reposiciona las partículas.
-    /// </summary>
     private void Avanzar()
     {
-        // Apagar el PS actual
         if (psActual != null)
         {
             psActual.Stop();
-            Destroy(psActual.gameObject);
-            psActual = null;
+            psActual.gameObject.SetActive(false); // 👈 en vez de Destroy
         }
 
         indiceActual++;
         MostrarSiguiente();
     }
 
-    /// <summary>
-    /// Permite reiniciar el recorrido desde el inicio.
-    /// </summary>
     public void ReiniciarRecorrido()
     {
-        if (psActual != null) Destroy(psActual.gameObject);
+        if (psActual != null)
+        {
+            psActual.Stop();
+            psActual.gameObject.SetActive(false);
+        }
         indiceActual = 0;
+        if (panelProgreso != null) panelProgreso.SetActive(false);
         MostrarSiguiente();
     }
 
-    /// <summary>
-    /// Si no está pegado al objeto, calculamos posición por bounds (centro + offset).
-    /// </summary>
     private Vector3 GetPosicionHighlight(GameObject obj)
     {
         if (pegarAlObjeto)
             return obj.transform.position + offset;
 
-        // Si no está “pegado”, usamos el centro aproximado del renderer
         var rend = obj.GetComponentInChildren<Renderer>();
         if (rend != null)
         {
@@ -143,5 +152,16 @@ public class RecorridoGuiado : MonoBehaviour
             return center + offset;
         }
         return obj.transform.position + offset;
+    }
+
+    private void MostrarPanelProgreso()
+    {
+        if (panelProgreso != null) panelProgreso.SetActive(true);
+    }
+
+    private void ActualizarUI()
+    {
+        if (textoProgreso != null)
+            textoProgreso.text = $"Seleccionaste {indiceActual + 1}/{objetosImportantes.Count} objetos, ¿deseas continuar a la siguiente fase?";
     }
 }

@@ -1952,7 +1952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
+  m_HorizontalFit: 2
   m_VerticalFit: 2
 --- !u!114 &201805193
 MonoBehaviour:
@@ -2365,6 +2365,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 269346896}
   m_CullTransparentMesh: 1
+--- !u!1 &271614125 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2689281048859660824, guid: af10c1df4b578df4db6821052fde95c3, type: 3}
+  m_PrefabInstance: {fileID: 5893386053292546887}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &274482099
 GameObject:
   m_ObjectHideFlags: 0
@@ -3362,6 +3367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelInfo: {fileID: 727748395}
+  objetoAsociado: {fileID: 0}
 --- !u!1001 &358224100
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13905,17 +13911,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcede088175300b40a3bb5776b5986cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particlePrefab: {fileID: 0}
+  particlePrefab: {fileID: 860928703618660060, guid: 51c7e20241349e24ba07f1727014c662, type: 3}
   offset: {x: 0, y: 1.5, z: 0}
   pegarAlObjeto: 1
   objetosImportantes:
-  - {fileID: 5639860602452266300}
   - {fileID: 6945696554995402705}
-  - {fileID: 1274654764}
+  - {fileID: 5639860602452266300}
+  - {fileID: 1809166035}
   - {fileID: 1760408655336243923}
   - {fileID: 9004234235620692414}
-  - {fileID: 1218911388948095353}
+  - {fileID: 271614125}
   - {fileID: 3320551397211351427}
+  panelProgreso: {fileID: 2594658537007835478}
+  textoProgreso: {fileID: 5761891710943585210}
+  OnRecorridoCompleto:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1443774571
 Transform:
   m_ObjectHideFlags: 0
@@ -16275,6 +16286,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2179057468902719979, guid: f47ad6ac315a3ea428b59e2cac6f2a2e, type: 3}
   m_PrefabInstance: {fileID: 358224100}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1809166035 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6064587824855225391, guid: c3c743cdfe48dab429bd2d0c30e462f8, type: 3}
+  m_PrefabInstance: {fileID: 360879982193413690}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1815318735
 GameObject:
   m_ObjectHideFlags: 0
@@ -17875,56 +17891,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1988569315}
   m_CullTransparentMesh: 1
---- !u!1 &1992775858
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1992775860}
-  - component: {fileID: 1992775859}
-  m_Layer: 0
-  m_Name: gameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1992775859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1992775858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bea049cb22df5f34ca5f113b20cd5f69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panelDotacion: {fileID: 978841325}
-  panelResumen: {fileID: 1887886447}
-  contenedorBotonesDotacion: {fileID: 1011356061}
-  prefabBotonDotacion: {fileID: 1981459175389222116, guid: 05c5d07ec6487c74b8902ac07d3a4b7c, type: 3}
-  contenedorResumen: {fileID: 0}
-  prefabTextoResumen: {fileID: 0}
---- !u!4 &1992775860
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1992775858}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.0307884, y: -1.7972269, z: 4.588418}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1994332309
 GameObject:
   m_ObjectHideFlags: 0
@@ -38226,6 +38192,5 @@ SceneRoots:
   - {fileID: 2080758979}
   - {fileID: 355036096}
   - {fileID: 1214147652}
-  - {fileID: 1992775860}
   - {fileID: 1443774571}
   - {fileID: 869496989}
