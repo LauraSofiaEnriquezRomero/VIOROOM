@@ -16,17 +16,15 @@ public class OutlineSelection : MonoBehaviour
 
     void Update()
     {
-        // Quitar highlight anterior
+        // 🔹 Quitar highlight anterior
         if (highlight != null)
         {
             var outlineOld = highlight.GetComponent<Outline>();
-            if (outlineOld != null)
-                outlineOld.enabled = false;
-
+            if (outlineOld != null) outlineOld.enabled = false;
             highlight = null;
         }
 
-        // Raycast desde el mouse
+        // 🔹 Raycast desde el mouse
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(ray, out raycastHit))
         {
@@ -42,85 +40,83 @@ public class OutlineSelection : MonoBehaviour
                 }
                 outline.enabled = true;
             }
-            else
-            {
-                highlight = null;
-            }
+            else highlight = null;
         }
 
-        // Selección con clic
+        // 🔹 Selección con clic
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             if (highlight)
             {
-                // Quitar outline del anterior
+                // Quitar outline anterior
                 if (selection != null)
                 {
                     var outlineSel = selection.GetComponent<Outline>();
-                    if (outlineSel != null)
-                        outlineSel.enabled = false;
+                    if (outlineSel != null) outlineSel.enabled = false;
                 }
 
-                // Asignar nueva selección
+                // Nueva selección
                 selection = raycastHit.transform;
                 var outlineNew = selection.GetComponent<Outline>();
-                if (outlineNew != null)
-                    outlineNew.enabled = true;
+                if (outlineNew != null) outlineNew.enabled = true;
 
                 highlight = null;
-
                 GameObject seleccionado = selection.gameObject;
 
+                // Guardar solo si es nuevo
                 if (!objetosSeleccionados.Contains(seleccionado))
                 {
                     objetosSeleccionados.Add(seleccionado);
-                    Debug.Log("Objeto guardado: " + seleccionado.name);
+                    Debug.Log("🟢 Objeto seleccionado y guardado: " + seleccionado.name);
 
-                    // 🔹 Enviar al GestorEvaluacion (solo en fase de Evaluación)
                     if (GeneradorFallas.faseActual == FaseSimulacion.Evaluacion && GestorEvaluacion.instancia != null)
                     {
                         GestorEvaluacion.instancia.RegistrarSeleccion(seleccionado);
+                        Debug.Log("📊 Evaluación registrada para: " + seleccionado.name);
                     }
 
-                    // 🔹 Notificar al Recorrido Guiado
                     if (RecorridoGuiado.instancia != null)
                     {
+                        Debug.Log("📌 Enviando selección al RecorridoGuiado: " + seleccionado.name);
                         RecorridoGuiado.instancia.RegistrarClick(seleccionado);
                     }
                 }
+                else Debug.Log("⚠ Objeto repetido (ya estaba guardado): " + seleccionado.name);
 
-                // ✅ Mostrar panel de información
+                // Mostrar panel de info
                 var mostrarInfo = seleccionado.GetComponent<MostrarInfoObjeto>();
                 if (mostrarInfo != null)
                 {
-                    // 🔹 Cerrar el panel anterior si existía
                     if (panelAnterior != null && panelAnterior != mostrarInfo)
                     {
                         panelAnterior.CerrarPanel();
+                        Debug.Log("📕 Cerrando panel anterior");
                     }
 
                     mostrarInfo.MostrarInformacion();
                     panelAnterior = mostrarInfo;
+                    Debug.Log("📖 Mostrando panel de información para: " + seleccionado.name);
                 }
             }
             else
             {
-                // Si hago click afuera, deselecciono
+                // Deselección si hago click afuera
                 if (selection)
                 {
                     var outlineSel = selection.GetComponent<Outline>();
-                    if (outlineSel != null)
-                        outlineSel.enabled = false;
+                    if (outlineSel != null) outlineSel.enabled = false;
 
+                    Debug.Log("❌ Deseleccionando objeto: " + selection.name);
                     selection = null;
                 }
 
-                // 🔹 Cerrar panel si hago click afuera
                 if (panelAnterior != null)
                 {
                     panelAnterior.CerrarPanel();
+                    Debug.Log("📕 Cerrando panel de información (click fuera)");
                     panelAnterior = null;
                 }
+                else Debug.Log("👆 Click fuera de objetos seleccionables.");
             }
         }
     }

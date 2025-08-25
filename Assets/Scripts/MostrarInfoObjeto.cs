@@ -5,7 +5,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class MostrarInfoObjeto : MonoBehaviour
 {
     public ObjetoInfoSO infoObjeto;
-
     public GameObject panelInfo;
     public Text textoNombre;
     public Text textoCategoria;
@@ -28,33 +27,27 @@ public class MostrarInfoObjeto : MonoBehaviour
         if (GeneradorFallas.faseActual == FaseSimulacion.Exploracion)
         {
             MostrarInformacion();
-
             if (!primerClickRegistrado)
             {
                 ProgresoInspeccion progreso = FindObjectOfType<ProgresoInspeccion>();
-                if (progreso != null)
-                {
-                    progreso.IniciarConteo();
-                    primerClickRegistrado = true;
-                }
+                if (progreso != null) progreso.IniciarConteo();
+                primerClickRegistrado = true;
             }
         }
         else if (GeneradorFallas.faseActual == FaseSimulacion.Evaluacion)
         {
             Debug.Log($"[Evaluación] Objeto {gameObject.name} seleccionado por el usuario.");
-            if (GestorEvaluacion.instancia != null)
-                GestorEvaluacion.instancia.RegistrarSeleccion(gameObject);
+            GestorEvaluacion.instancia?.RegistrarSeleccion(gameObject);
         }
     }
 
     public void MostrarInformacion()
     {
-        if (GeneradorFallas.faseActual != FaseSimulacion.Exploracion)
-            return;
+        if (GeneradorFallas.faseActual != FaseSimulacion.Exploracion) return;
 
         if (infoObjeto == null || textoNombre == null || textoCategoria == null || textoDescripcion == null || panelInfo == null)
         {
-            Debug.LogWarning($"Faltan referencias en {gameObject.name}");
+            Debug.LogWarning($"⚠ Faltan referencias en {gameObject.name}");
             return;
         }
 
@@ -67,10 +60,7 @@ public class MostrarInfoObjeto : MonoBehaviour
         if (objetosADesactivar != null)
         {
             foreach (var obj in objetosADesactivar)
-            {
-                if (obj != null)
-                    obj.SetActive(false);
-            }
+                if (obj != null) obj.SetActive(false);
         }
     }
 
@@ -79,24 +69,13 @@ public class MostrarInfoObjeto : MonoBehaviour
         if (objetosADesactivar != null)
         {
             foreach (var obj in objetosADesactivar)
-            {
-                if (obj != null)
-                    obj.SetActive(true);
-            }
+                if (obj != null) obj.SetActive(true);
         }
     }
 
-    // ✅ Nuevo método: Cerrar el panel y restaurar objetos
     public void CerrarPanel()
     {
-        if (panelInfo != null)
-            panelInfo.SetActive(false);
-
+        if (panelInfo != null) panelInfo.SetActive(false);
         RestaurarObjetos();
-    }
-
-    public void EjecutarDesdeInspector()
-    {
-        MostrarInformacion();
     }
 }
