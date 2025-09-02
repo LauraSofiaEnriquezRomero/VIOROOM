@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombreObjeto: Alarma de gases
   descripcion: "Sistema que alerta sobre fallas o irregularidades en la presi\xF3n
-    y flujo de gases medicinales. (Resoluci\xF3n 1441 de 2013)"
+    y flujo de gases medicinales. Este elemento no puede instalarse dentro del quir\xF3fano, 
+    debe ubicarse en un espacio externo."
   categoria: "Seguridad el\xE9ctrica"
