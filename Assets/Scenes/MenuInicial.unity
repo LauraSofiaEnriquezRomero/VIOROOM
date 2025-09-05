@@ -1075,6 +1075,9 @@ MonoBehaviour:
   showForSeconds: 5
   sceneToLoad: 
   loadNextScene: 0
+  onPressed:
+    m_PersistentCalls:
+      m_Calls: []
   rayLength: 150
 --- !u!65 &774027992
 BoxCollider:
@@ -1583,15 +1586,15 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1240868734}
+  - {fileID: 981263810}
   - {fileID: 1891004714}
   - {fileID: 838598813}
   - {fileID: 1921800336}
-  - {fileID: 981263810}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 2.52}
+  m_AnchoredPosition: {x: 0, y: 7.2}
   m_SizeDelta: {x: 1000, y: 661.0774}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1068057502
@@ -1877,6 +1880,9 @@ MonoBehaviour:
   showForSeconds: 5
   sceneToLoad: 
   loadNextScene: 0
+  onPressed:
+    m_PersistentCalls:
+      m_Calls: []
   rayLength: 150
 --- !u!65 &1123141790
 BoxCollider:
@@ -2229,6 +2235,9 @@ MonoBehaviour:
   showForSeconds: 5
   sceneToLoad: 
   loadNextScene: 1
+  onPressed:
+    m_PersistentCalls:
+      m_Calls: []
   rayLength: 150
 --- !u!65 &1268172416
 BoxCollider:
@@ -2249,8 +2258,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 207.43587, y: 85.01506, z: 1}
-  m_Center: {x: -0.11781454, y: 0.32218695, z: 0}
+  m_Size: {x: 363.53433, y: 254.2367, z: 1}
+  m_Center: {x: 1.2504458, y: 5.8179855, z: 0}
 --- !u!114 &1268172417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2911,8 +2920,8 @@ Transform:
   m_GameObject: {fileID: 1723127023}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0079, y: -1.4, z: -0.28569984}
-  m_LocalScale: {x: 2.1449, y: 12.51, z: 2.394034}
+  m_LocalPosition: {x: -4.3223, y: -1.4, z: 18.5424}
+  m_LocalScale: {x: 7.24049, y: 12.51, z: 7.930272}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -3848,6 +3857,9 @@ MonoBehaviour:
   showForSeconds: 5
   sceneToLoad: 
   loadNextScene: 0
+  onPressed:
+    m_PersistentCalls:
+      m_Calls: []
   rayLength: 100
 --- !u!114 &2081228285
 MonoBehaviour:

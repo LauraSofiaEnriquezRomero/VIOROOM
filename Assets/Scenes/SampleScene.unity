@@ -8109,7 +8109,7 @@ MonoBehaviour:
   - {fileID: 1235097098}
   - {fileID: 1368533731}
   - {fileID: 771961704}
-  - {fileID: 0}
+  - {fileID: 1241251795}
   - {fileID: 64671299}
   - {fileID: 50702112}
   - {fileID: 205945204}
@@ -13865,11 +13865,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4104600848960529023, guid: f13163ee68159764bb390f3d867dfcc1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.206
+      value: 0.072
       objectReference: {fileID: 0}
     - target: {fileID: 4104600848960529023, guid: f13163ee68159764bb390f3d867dfcc1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.705
+      value: -1.978
       objectReference: {fileID: 0}
     - target: {fileID: 4104600848960529023, guid: f13163ee68159764bb390f3d867dfcc1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13998,6 +13998,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af10c1df4b578df4db6821052fde95c3, type: 3}
+--- !u!1 &1241251795 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1148335670926703512, guid: f13163ee68159764bb390f3d867dfcc1, type: 3}
+  m_PrefabInstance: {fileID: 1343352378}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1255638673
 GameObject:
   m_ObjectHideFlags: 0
@@ -14567,7 +14572,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1148335670926703512, guid: f13163ee68159764bb390f3d867dfcc1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1804340876387812773, guid: f13163ee68159764bb390f3d867dfcc1, type: 3}
       propertyPath: m_BoundingSphereOverride.w
