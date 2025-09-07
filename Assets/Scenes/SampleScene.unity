@@ -8078,7 +8078,6 @@ GameObject:
   - component: {fileID: 727748396}
   - component: {fileID: 727748398}
   - component: {fileID: 727748397}
-  - component: {fileID: 727748399}
   m_Layer: 5
   m_Name: Panel_Info
   m_TagString: Untagged
@@ -8150,31 +8149,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 727748395}
   m_CullTransparentMesh: 1
---- !u!114 &727748399
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 727748395}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccebb9a418de5b94eba581920ce2f0c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  secuenciaDeObjetos:
-  - {fileID: 1235097098}
-  - {fileID: 1368533731}
-  - {fileID: 771961704}
-  - {fileID: 1241251795}
-  - {fileID: 64671299}
-  - {fileID: 50702112}
-  - {fileID: 205945204}
-  - {fileID: 848804712}
-  - {fileID: 522028089}
-  - {fileID: 526753663}
-  - {fileID: 1229156550}
-  - {fileID: 82789965}
 --- !u!1 &732956838
 GameObject:
   m_ObjectHideFlags: 0
@@ -13977,11 +13951,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f13163ee68159764bb390f3d867dfcc1, type: 3}
---- !u!1 &1229156550 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1148335670926703512, guid: f13163ee68159764bb390f3d867dfcc1, type: 3}
-  m_PrefabInstance: {fileID: 1229156549}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1235097097
 PrefabInstance:
   m_ObjectHideFlags: 0

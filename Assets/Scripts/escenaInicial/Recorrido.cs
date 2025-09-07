@@ -7,11 +7,6 @@ public class Recorrido : MonoBehaviour
 {
     public static Recorrido instancia;
 
-    [Header("Prefab de Partículas (Highlight) - opcional, se mantiene por compatibilidad")]
-    public ParticleSystem particlePrefab;
-    public Vector3 offset = new Vector3(0, 1.5f, 0);
-    public bool pegarAlObjeto = true;
-
     [Header("Lista (en orden) de objetos a guiar")]
     public List<GameObject> objetosImportantes = new List<GameObject>();
 
@@ -30,7 +25,6 @@ public class Recorrido : MonoBehaviour
     public bool permitirClickEnHijos = true;
 
     private int indiceActual = 0;
-    private ParticleSystem psActual;
     private GameObject objetivoActual;
 
     private void Awake()
@@ -84,7 +78,6 @@ public class Recorrido : MonoBehaviour
         }
     }
 
-
     private bool EsObjetivoValido(GameObject clicado, GameObject objetivo)
     {
         if (clicado == objetivo) return true;
@@ -130,46 +123,11 @@ public class Recorrido : MonoBehaviour
         else
             Debug.LogWarning($"[RecorridoGuiado] No hay PuntoDeLuz para índice {indiceActual}.");
 
-        // Partículas (opcional)
-        if (particlePrefab != null)
-        {
-            if (psActual == null)
-            {
-                psActual = Instantiate(particlePrefab, GetPosicionHighlight(objetivoActual), Quaternion.identity);
-            }
-            else
-            {
-                psActual.gameObject.SetActive(true);
-                psActual.transform.position = GetPosicionHighlight(objetivoActual);
-            }
-
-            if (pegarAlObjeto)
-            {
-                psActual.transform.SetParent(objetivoActual.transform, true);
-                psActual.transform.localPosition = offset;
-            }
-            else
-            {
-                psActual.transform.SetParent(null);
-            }
-
-            var main = psActual.main;
-            main.loop = true;
-            psActual.Play();
-        }
-
         ActualizarUI();
     }
 
     private void Avanzar()
     {
-        // Apagar partículas opcionales
-        if (psActual != null)
-        {
-            psActual.Stop();
-            psActual.gameObject.SetActive(false);
-        }
-
         // Apagar el punto actual
         if (indiceActual < puntosDeLuz.Count && puntosDeLuz[indiceActual] != null)
             puntosDeLuz[indiceActual].SetActive(false);
@@ -181,32 +139,12 @@ public class Recorrido : MonoBehaviour
 
     public void ReiniciarRecorrido()
     {
-        if (psActual != null)
-        {
-            psActual.Stop();
-            psActual.gameObject.SetActive(false);
-        }
-
         for (int i = 0; i < puntosDeLuz.Count; i++)
             if (puntosDeLuz[i] != null) puntosDeLuz[i].SetActive(false);
 
         indiceActual = 0;
         if (panelProgreso != null) panelProgreso.SetActive(false);
         MostrarSiguiente();
-    }
-
-    private Vector3 GetPosicionHighlight(GameObject obj)
-    {
-        if (pegarAlObjeto)
-            return obj.transform.position + offset;
-
-        var rend = obj.GetComponentInChildren<Renderer>();
-        if (rend != null)
-        {
-            var center = rend.bounds.center;
-            return center + offset;
-        }
-        return obj.transform.position + offset;
     }
 
     private void MostrarPanelProgreso()
