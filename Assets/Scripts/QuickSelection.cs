@@ -75,10 +75,10 @@ public class OutlineSelection : MonoBehaviour
                         Debug.Log("📊 Evaluación registrada para: " + seleccionado.name);
                     }
 
-                    if (RecorridoGuiado.instancia != null)
+                    if (Recorrido.instancia != null)
                     {
                         Debug.Log("📌 Enviando selección al RecorridoGuiado: " + seleccionado.name);
-                        RecorridoGuiado.instancia.RegistrarClick(seleccionado);
+                        Recorrido.instancia.RegistrarClick(seleccionado);
                     }
                 }
                 else Debug.Log("⚠ Objeto repetido (ya estaba guardado): " + seleccionado.name);
