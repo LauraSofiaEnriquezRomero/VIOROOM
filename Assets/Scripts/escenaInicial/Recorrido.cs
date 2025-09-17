@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+ // Para XR grab interactable
 
 public class Recorrido : MonoBehaviour
 {
@@ -34,29 +35,47 @@ public class Recorrido : MonoBehaviour
 
     private void Start()
     {
-        if (panelProgreso != null) panelProgreso.SetActive(false);
+        if (panelProgreso != null)
+            panelProgreso.SetActive(false);
 
-        // Validaciones de listas
         if (objetosImportantes == null || objetosImportantes.Count == 0)
         {
             Debug.LogWarning("[RecorridoGuiado] No hay objetos en 'objetosImportantes'.");
             return;
         }
+
         if (puntosDeLuz == null || puntosDeLuz.Count == 0)
-        {
             Debug.LogWarning("[RecorridoGuiado] 'puntosDeLuz' vacío. Asigna indicadores en el mismo orden que 'objetosImportantes'.");
-        }
         else if (puntosDeLuz.Count != objetosImportantes.Count)
-        {
-            Debug.LogWarning($"[RecorridoGuiado] Tamaños distintos: objetos={objetosImportantes.Count}, puntosDeLuz={puntosDeLuz.Count}. Se usará el índice disponible en ambas listas.");
-        }
+            Debug.LogWarning($"[RecorridoGuiado] Tamaños distintos: objetos={objetosImportantes.Count}, puntosDeLuz={puntosDeLuz.Count}.");
 
         // Apagar todas las luces
-        for (int i = 0; i < puntosDeLuz.Count; i++)
-            if (puntosDeLuz[i] != null) puntosDeLuz[i].SetActive(false);
+        foreach (var luz in puntosDeLuz)
+            if (luz != null) luz.SetActive(false);
 
-        // Iniciar en el elemento 0
+        // Registrar eventos grab XR
+        RegistrarEventosGrab();
+
+        // Iniciar el recorrido
         MostrarSiguiente();
+    }
+
+    private void RegistrarEventosGrab()
+    {
+        foreach (var obj in objetosImportantes)
+        {
+            if (obj == null) continue;
+
+            UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable interactable = obj.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable>();
+            if (interactable != null)
+            {
+                interactable.selectEntered.AddListener((args) => { RegistrarClick(obj); });
+            }
+            else
+            {
+                Debug.LogWarning($"[RecorridoGuiado] Objeto {obj.name} no tiene XRBaseInteractable.");
+            }
+        }
     }
 
     public void RegistrarClick(GameObject objClicado)
@@ -83,25 +102,29 @@ public class Recorrido : MonoBehaviour
         if (clicado == objetivo) return true;
         if (!permitirClickEnHijos) return false;
 
-        // ¿El objeto clicado es hijo del objetivo, o el objetivo es hijo del clicado?
         return clicado.transform.IsChildOf(objetivo.transform) || objetivo.transform.IsChildOf(clicado.transform);
     }
 
     private void MostrarSiguiente()
     {
-        // Fin del recorrido
+        // Verificar si terminó el recorrido
         if (indiceActual >= objetosImportantes.Count)
         {
-            // Asegurar que todas las luces queden apagadas
-            for (int i = 0; i < puntosDeLuz.Count; i++)
-                if (puntosDeLuz[i] != null) puntosDeLuz[i].SetActive(false);
+            // Apagar todas las luces
+            foreach (var luz in puntosDeLuz)
+                if (luz != null) luz.SetActive(false);
 
             Debug.Log("[RecorridoGuiado] Recorrido terminado ✅");
-            MostrarPanelProgreso();
+
+            // Activar panel solo al terminar
+            if (panelProgreso != null)
+                panelProgreso.SetActive(true);
+
             OnRecorridoCompleto?.Invoke();
             return;
         }
 
+        // Definir el objetivo actual
         objetivoActual = objetosImportantes[indiceActual];
         if (objetivoActual == null)
         {
@@ -111,50 +134,39 @@ public class Recorrido : MonoBehaviour
             return;
         }
 
-        // Encender SOLO el punto de luz del índice actual
+        // Encender únicamente la luz del índice actual
         for (int i = 0; i < puntosDeLuz.Count; i++)
-        {
-            if (puntosDeLuz[i] == null) continue;
-            bool activar = (i == indiceActual);
-            puntosDeLuz[i].SetActive(activar);
-        }
-        if (indiceActual < puntosDeLuz.Count && puntosDeLuz[indiceActual] != null)
-            Debug.Log($"[RecorridoGuiado] 💡 Encendido PuntoDeLuz[{indiceActual}] para: {objetivoActual.name}");
-        else
-            Debug.LogWarning($"[RecorridoGuiado] No hay PuntoDeLuz para índice {indiceActual}.");
+            if (puntosDeLuz[i] != null)
+                puntosDeLuz[i].SetActive(i == indiceActual);
 
         ActualizarUI();
     }
 
     private void Avanzar()
     {
-        // Apagar el punto actual
+        // Apagar luz actual
         if (indiceActual < puntosDeLuz.Count && puntosDeLuz[indiceActual] != null)
             puntosDeLuz[indiceActual].SetActive(false);
 
-        // Incrementar índice y mostrar siguiente
         indiceActual++;
         MostrarSiguiente();
     }
 
     public void ReiniciarRecorrido()
     {
-        for (int i = 0; i < puntosDeLuz.Count; i++)
-            if (puntosDeLuz[i] != null) puntosDeLuz[i].SetActive(false);
+        foreach (var luz in puntosDeLuz)
+            if (luz != null) luz.SetActive(false);
 
         indiceActual = 0;
-        if (panelProgreso != null) panelProgreso.SetActive(false);
-        MostrarSiguiente();
-    }
+        if (panelProgreso != null)
+            panelProgreso.SetActive(false);
 
-    private void MostrarPanelProgreso()
-    {
-        if (panelProgreso != null) panelProgreso.SetActive(true);
+        MostrarSiguiente();
     }
 
     private void ActualizarUI()
     {
         if (textoProgreso != null)
-            textoProgreso.text = $"Seleccionaste {Mathf.Min(indiceActual + 1, objetosImportantes.Count)}/{objetosImportantes.Count} objetos.";
+            textoProgreso.text = $"Seleccionaste {Mathf.Min(indiceActual, objetosImportantes.Count)}/{objetosImportantes.Count} objetos.";
     }
 }
