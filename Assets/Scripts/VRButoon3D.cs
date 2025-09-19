@@ -61,7 +61,14 @@ public class VRButton3D : MonoBehaviour
 
         HandleSceneChange();
         onPressed?.Invoke();
+
+        var uiButton = GetComponent<UnityEngine.UI.Button>();
+        if (uiButton != null)
+        {
+            uiButton.onClick.Invoke();
+        }
     }
+
 
     private void SwapObjects()
     {
