@@ -41,7 +41,7 @@ public class GeneradorFallas : MonoBehaviour
         DesactivarTodas();
         activadas.Clear();
 
-        ActivarFallasAleatorias(fallasInfraestructura, 2);
+        ActivarFallasAleatorias(fallasInfraestructura, 3);
         ActivarFallasAleatorias(fallasDotacion, 1);
         ActivarFallasAleatorias(fallasElectrica, 2);
 

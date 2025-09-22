@@ -20,45 +20,25 @@ public class GestorEvaluacion : MonoBehaviour
 
     private List<GameObject> seleccionesUsuario = new List<GameObject>();
     private FallaInteractiva dotacionActiva;
-    private bool evaluacionEnCurso = false; // ✅ evita seguir registrando después de mostrar el panel
+    private bool evaluacionEnCurso = false; 
 
-private void Awake()
-{
-    instancia = this;
+    private void Awake()
+    {
+        instancia = this;
 
-    Debug.Log($"[DEBUG] Referencias en Awake(): " +
-              $"\n panelDotacion={panelDotacion}" +
-              $"\n panelResumen={panelResumen}" +
-              $"\n contenedorBotonesDotacion={contenedorBotonesDotacion}" +
-              $"\n prefabBotonDotacion={prefabBotonDotacion}" +
-              $"\n contenedorResumen={contenedorResumen}" +
-              $"\n prefabTextoResumen={prefabTextoResumen}");
-
-    if (panelDotacion != null) panelDotacion.SetActive(false);
-    if (panelResumen != null) panelResumen.SetActive(false);
-}
-
+        if (panelDotacion != null) panelDotacion.SetActive(false);
+        if (panelResumen != null) panelResumen.SetActive(false);
+    }
 
     public void RegistrarSeleccion(GameObject obj)
     {
-        if (evaluacionEnCurso)
-        {
-            Debug.Log("[Evaluación] Ya está en curso, no se registran más selecciones.");
-            return;
-        }
-
-        if (seleccionesUsuario.Contains(obj))
-        {
-            Debug.Log($"[Evaluación] {obj.name} ya había sido seleccionado, se ignora.");
-            return;
-        }
+        if (evaluacionEnCurso) return;
+        if (seleccionesUsuario.Contains(obj)) return;
 
         seleccionesUsuario.Add(obj);
-        Debug.Log($"[Evaluación] Selección: {obj.name} ({seleccionesUsuario.Count}/5)");
 
         if (seleccionesUsuario.Count >= 5)
         {
-            Debug.Log("[Evaluación] → Se alcanzaron 5 selecciones. Intentando activar panelDotacion...");
             evaluacionEnCurso = true;
             MostrarPanelDotacion();
         }
@@ -66,54 +46,24 @@ private void Awake()
 
     private void MostrarPanelDotacion()
     {
-        Debug.Log("[Evaluación] → Entrando en MostrarPanelDotacion()");
-
-        if (panelDotacion == null)
-        {
-            Debug.LogError("⚠️ panelDotacion está NULL en el Inspector");
-            return;
-        }
-
         panelDotacion.SetActive(true);
-        Debug.Log("[Evaluación] → PanelDotacion activado");
 
-        // 🔹 Limpiar botones previos
         foreach (Transform t in contenedorBotonesDotacion)
             Destroy(t.gameObject);
 
         var gf = FindObjectOfType<GeneradorFallas>();
-        if (gf == null)
-        {
-            Debug.LogError("⚠️ No hay GeneradorFallas en la escena.");
-            return;
-        }
+        if (gf == null) return;
 
-        // 🔹 Guardamos cuál era la dotación realmente activada en la fase
         var dotacionActivas = gf.GetDotacionActiva();
         dotacionActiva = dotacionActivas.Count > 0 ? dotacionActivas[0] : null;
 
-        // ✅ Ahora solo listamos las fallas ocultables (estén activas o no)
         var opciones = gf.GetOpcionesOcultables();
-
-        if (opciones == null || opciones.Count == 0)
-        {
-            Debug.LogWarning("⚠️ No hay fallas ocultables configuradas en GeneradorFallas");
-            return;
-        }
 
         foreach (var obj in opciones)
         {
-            if (prefabBotonDotacion == null)
-            {
-                Debug.LogError("⚠️ prefabBotonDotacion no está asignado en el Inspector");
-                return;
-            }
-
             Button btn = Instantiate(prefabBotonDotacion, contenedorBotonesDotacion);
             btn.GetComponentInChildren<Text>().text = obj.name;
             btn.onClick.AddListener(() => SeleccionarDotacion(obj));
-
-            Debug.Log($"[Evaluación] Botón creado para: {obj.name}");
         }
     }
 
@@ -125,57 +75,92 @@ private void Awake()
 
     private void MostrarResumen(GameObject seleccionDotacion)
     {
-        if (panelResumen == null)
-        {
-            Debug.LogError("⚠️ panelResumen no está asignado en el Inspector");
-            return;
-        }
-
         panelResumen.SetActive(true);
-        Debug.Log("[Evaluación] → Mostrando resumen final");
 
-        // 🔹 Limpiar textos previos
         foreach (Transform t in contenedorResumen)
             Destroy(t.gameObject);
 
         var gf = FindObjectOfType<GeneradorFallas>();
-        if (gf == null)
-        {
-            Debug.LogError("⚠️ No se encontró GeneradorFallas en la escena al mostrar resumen");
-            return;
-        }
+        if (gf == null) return;
 
         var fallas = gf.GetFallasActivadas();
 
-        // ✅ Revisamos TODAS las fallas activadas
+        // --- Correctas ---
+        CrearTituloSeccion("Correctas ✅");
         foreach (var falla in fallas)
         {
-            string estado = seleccionesUsuario.Contains(falla.gameObject) ? "Correcto ✅" : "Faltante ⚠️";
-            CrearLineaResumen($"{falla.name} → {estado}");
+            // Caso normal
+            if (seleccionesUsuario.Contains(falla.gameObject))
+            {
+                CrearLineaResumen(falla.name, falla.gameObject, "Correcto ✅");
+            }
+            // Caso especial: CambiarObjeto activado
+            else if (falla.tipoFalla == FallaInteractiva.TipoFalla.CambiarObjeto && falla.EstaActiva())
+            {
+                CrearLineaResumen(falla.name, falla.objetoObjetivo, "Correcto (Reemplazado) ✅");
+            }
         }
 
-        // ✅ Revisamos dotación
-        bool aciertoDotacion = (dotacionActiva != null && seleccionDotacion == dotacionActiva.gameObject);
-        CrearLineaResumen($"Dotación seleccionada: {seleccionDotacion.name} → {(aciertoDotacion ? "Correcto ✅" : "Incorrecto ❌")}");
+        // --- No seleccionadas ---
+        CrearTituloSeccion("No seleccionadas ⚠️");
+        foreach (var falla in fallas)
+        {
+            if (!seleccionesUsuario.Contains(falla.gameObject))
+            {
+                // Si es CambiarObjeto y está activo, ya se contó como Correcta
+                if (falla.tipoFalla == FallaInteractiva.TipoFalla.CambiarObjeto && falla.EstaActiva())
+                    continue;
 
-        // ✅ Revisamos selecciones extra que NO eran fallas
+                CrearLineaResumen(falla.name, falla.gameObject, "No seleccionada ⚠️");
+            }
+        }
+
+        // --- Incorrectas ---
+        CrearTituloSeccion("Incorrectas ❌");
         foreach (var obj in seleccionesUsuario)
         {
             bool esFalla = fallas.Exists(f => f.gameObject == obj);
+
+            // Si no es una falla, está mal
             if (!esFalla)
-                CrearLineaResumen($"{obj.name} → Extra ❌");
+                CrearLineaResumen(obj.name, obj, "Incorrecta ❌");
         }
+
+        // --- Dotación ---
+        CrearTituloSeccion("Dotación");
+        bool aciertoDotacion = (dotacionActiva != null && seleccionDotacion == dotacionActiva.gameObject);
+        CrearLineaResumen(seleccionDotacion.name, seleccionDotacion, aciertoDotacion ? "Correcto ✅" : "Incorrecto ❌");
     }
 
-    private void CrearLineaResumen(string texto)
+    private void CrearTituloSeccion(string titulo)
     {
-        if (prefabTextoResumen == null)
-        {
-            Debug.LogError("⚠️ prefabTextoResumen no está asignado en el Inspector");
-            return;
-        }
+        if (prefabTextoResumen == null) return;
 
-        Text t = Instantiate(prefabTextoResumen, contenedorResumen);
-        t.text = texto;
+        Text tituloUI = Instantiate(prefabTextoResumen, contenedorResumen);
+        tituloUI.text = $"\n--- {titulo} ---";
+        tituloUI.fontStyle = FontStyle.Bold;
+    }
+
+    private void CrearLineaResumen(string titulo, GameObject obj, string estado)
+    {
+        if (prefabTextoResumen == null) return;
+
+        // Línea con nombre + estado
+        Text t1 = Instantiate(prefabTextoResumen, contenedorResumen);
+        t1.text = $"{titulo} → {estado}";
+
+        // Línea con descripción
+        string descripcion = ObtenerDescripcion(obj);
+        Text t2 = Instantiate(prefabTextoResumen, contenedorResumen);
+        t2.text = $"Descripción: {descripcion}";
+    }
+
+    private string ObtenerDescripcion(GameObject obj)
+    {
+        if (obj == null) return "Sin descripción";
+        var info = obj.GetComponent<MostrarInfoObjeto>();
+        if (info != null && info.infoObjeto != null && !string.IsNullOrEmpty(info.infoObjeto.descripcion))
+            return info.infoObjeto.descripcion;
+        return "Sin descripción";
     }
 }

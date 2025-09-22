@@ -89,8 +89,7 @@ public class MostrarInfoObjeto : MonoBehaviour
         // Solo se registra el primer click (para iniciar progreso)
         if (!primerClickRegistrado)
         {
-            ProgresoInspeccion progreso = FindObjectOfType<ProgresoInspeccion>();
-            if (progreso != null) progreso.IniciarConteo();
+
             primerClickRegistrado = true;
         }
     }

@@ -159,4 +159,8 @@ public class FallaInteractiva : MonoBehaviour
 
         fallaActiva = false;
     }
+    public bool EstaActiva()
+{
+    return fallaActiva;
+}
 }

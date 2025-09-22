@@ -105,42 +105,53 @@ public class Recorrido : MonoBehaviour
         return clicado.transform.IsChildOf(objetivo.transform) || objetivo.transform.IsChildOf(clicado.transform);
     }
 
-    private void MostrarSiguiente()
+private void MostrarSiguiente()
+{
+    // Verificar si terminó el recorrido
+    if (indiceActual >= objetosImportantes.Count)
     {
-        // Verificar si terminó el recorrido
-        if (indiceActual >= objetosImportantes.Count)
-        {
-            // Apagar todas las luces
-            foreach (var luz in puntosDeLuz)
-                if (luz != null) luz.SetActive(false);
+        // Apagar todas las luces
+        foreach (var luz in puntosDeLuz)
+            if (luz != null) luz.SetActive(false);
 
-            Debug.Log("[RecorridoGuiado] Recorrido terminado ✅");
+        Debug.Log("[RecorridoGuiado] Recorrido terminado ✅");
 
-            // Activar panel solo al terminar
-            if (panelProgreso != null)
-                panelProgreso.SetActive(true);
+        // Activar panel de progreso
+        if (panelProgreso != null)
+            panelProgreso.SetActive(true);
 
-            OnRecorridoCompleto?.Invoke();
-            return;
-        }
+        // Mostrar popup final (si existe en la escena)
+        // ProgresoInspeccion popup = FindObjectOfType<ProgresoInspeccion>();
+        // if (popup != null)
+        // {
+        //     popup.MostrarPopupFinal();
+        // }
+        // else
+        // {
+        //     Debug.LogWarning("[RecorridoGuiado] No se encontró un objeto con 'ProgresoInspeccion'.");
+        // }
 
-        // Definir el objetivo actual
-        objetivoActual = objetosImportantes[indiceActual];
-        if (objetivoActual == null)
-        {
-            Debug.LogWarning($"[RecorridoGuiado] Objeto en índice {indiceActual} es NULL. Saltando.");
-            indiceActual++;
-            MostrarSiguiente();
-            return;
-        }
-
-        // Encender únicamente la luz del índice actual
-        for (int i = 0; i < puntosDeLuz.Count; i++)
-            if (puntosDeLuz[i] != null)
-                puntosDeLuz[i].SetActive(i == indiceActual);
-
-        ActualizarUI();
+        OnRecorridoCompleto?.Invoke();
+        return;
     }
+
+    // Definir el objetivo actual
+    objetivoActual = objetosImportantes[indiceActual];
+    if (objetivoActual == null)
+    {
+        Debug.LogWarning($"[RecorridoGuiado] Objeto en índice {indiceActual} es NULL. Saltando.");
+        indiceActual++;
+        MostrarSiguiente();
+        return;
+    }
+
+    // Encender únicamente la luz del índice actual
+    for (int i = 0; i < puntosDeLuz.Count; i++)
+        if (puntosDeLuz[i] != null)
+            puntosDeLuz[i].SetActive(i == indiceActual);
+
+    ActualizarUI();
+}
 
     private void Avanzar()
     {
@@ -167,6 +178,6 @@ public class Recorrido : MonoBehaviour
     private void ActualizarUI()
     {
         if (textoProgreso != null)
-            textoProgreso.text = $"Seleccionaste {Mathf.Min(indiceActual, objetosImportantes.Count)}/{objetosImportantes.Count} objetos.";
+            textoProgreso.text = $"Seleccionaste {Mathf.Min(indiceActual, objetosImportantes.Count+1)}/{objetosImportantes.Count} objetos.";
     }
 }

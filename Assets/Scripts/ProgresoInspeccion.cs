@@ -3,13 +3,11 @@ using UnityEngine;
 public class ProgresoInspeccion : MonoBehaviour
 {
     [Header("Configuración")]
-    public GameObject panelPopup; // Panel que aparece al pasar el tiempo
+    public GameObject panelPopup; // Panel que aparece al terminar el recorrido
     public bool desactivarInteractors = true;
-    public float tiempoEspera = 30f; // Segundos antes de mostrar panel
     public GeneradorFallas generadorFallas;
 
     private bool yaUsoSeguirExplorando = false;
-    private float tiempoRestante;
     private UnityEngine.XR.Interaction.Toolkit.Interactors.XRBaseInteractor[] cachedInteractors;
 
     private void Start()
@@ -21,26 +19,10 @@ public class ProgresoInspeccion : MonoBehaviour
             cachedInteractors = FindObjectsOfType<UnityEngine.XR.Interaction.Toolkit.Interactors.XRBaseInteractor>();
     }
 
-    public void IniciarConteo()
-    {
-        tiempoRestante = tiempoEspera;
-        CancelInvoke(nameof(ContarTiempo)); // Reinicia si ya estaba contando
-        InvokeRepeating(nameof(ContarTiempo), 1f, 1f);
-        Debug.Log("[Progreso] Conteo iniciado/reiniciado");
-    }
-
-    private void ContarTiempo()
-    {
-        tiempoRestante -= 1f;
-
-        if (tiempoRestante <= 0)
-        {
-            CancelInvoke(nameof(ContarTiempo));
-            MostrarPopup();
-        }
-    }
-
-    private void MostrarPopup()
+    /// <summary>
+    /// Llamar este método al finalizar el recorrido de los puntos.
+    /// </summary>
+    public void MostrarPopup()
     {
         if (desactivarInteractors && cachedInteractors != null)
         {
@@ -50,6 +32,8 @@ public class ProgresoInspeccion : MonoBehaviour
 
         if (panelPopup != null)
             panelPopup.SetActive(true);
+
+        Debug.Log("[Progreso] Popup mostrado tras finalizar recorrido");
     }
 
     // Botón "Seguir Explorando"
@@ -70,10 +54,7 @@ public class ProgresoInspeccion : MonoBehaviour
                 if (it != null) it.enabled = true;
         }
 
-        // Reinicia el conteo por última vez
-        tiempoRestante = tiempoEspera;
-        CancelInvoke(nameof(ContarTiempo));
-        InvokeRepeating(nameof(ContarTiempo), 1f, 1f);
+        Debug.Log("[Progreso] Usuario eligió seguir explorando");
     }
 
     // Botón "Iniciar Fase 2"
