@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GestorEvaluacion : MonoBehaviour
 {
@@ -110,7 +112,11 @@ private void Awake()
             }
 
             Button btn = Instantiate(prefabBotonDotacion, contenedorBotonesDotacion);
-            btn.GetComponentInChildren<Text>().text = obj.name;
+            TMP_Text tmpText = btn.GetComponentInChildren<TMP_Text>();
+            if (tmpText != null)
+            {
+                tmpText.text = obj.name;
+            }
             btn.onClick.AddListener(() => SeleccionarDotacion(obj));
 
             Debug.Log($"[Evaluación] Botón creado para: {obj.name}");
