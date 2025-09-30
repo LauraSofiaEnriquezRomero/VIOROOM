@@ -1436,7 +1436,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4282523680
-  m_fontColor: {r: 0.1254902, g: 0.1254902, b: 0.25882354, a: 1}
+  m_fontColor: {r: 0, g: 0.6431373, b: 0.48235294, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1570,7 +1570,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4282523680
-  m_fontColor: {r: 0.1254902, g: 0.1254902, b: 0.25882354, a: 1}
+  m_fontColor: {r: 0, g: 0.6431373, b: 0.48235294, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2656,7 +2656,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4282523680
-  m_fontColor: {r: 0.1254902, g: 0.1254902, b: 0.25882354, a: 1}
+  m_fontColor: {r: 0, g: 0.6431373, b: 0.48235294, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4483,7 +4483,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 979951b8294f3b9439972c5e2396f963, type: 3}
+  m_Sprite: {fileID: 21300000, guid: de29f4da8599670439ffabcfbcf46220, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4591,7 +4591,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 98f78c4cc5873cd4389cf46d869a27ff, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c0eefd5a22fa50f4d8b08d569e0b4fd8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5182,7 +5182,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cda524bfec8f998459c77b2e165979d0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 79268219a74152f45b51687e950b123a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5336,6 +5336,22 @@ PrefabInstance:
     - target: {fileID: 7836561235731953434, guid: de6a90d2548b7d14783756d77cb74331, type: 3}
       propertyPath: m_Name
       value: Cube
+      objectReference: {fileID: 0}
+    - target: {fileID: 7866365180834346133, guid: de6a90d2548b7d14783756d77cb74331, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.48113206
+      objectReference: {fileID: 0}
+    - target: {fileID: 7866365180834346133, guid: de6a90d2548b7d14783756d77cb74331, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.6415094
+      objectReference: {fileID: 0}
+    - target: {fileID: 7866365180834346133, guid: de6a90d2548b7d14783756d77cb74331, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7866365180834346133, guid: de6a90d2548b7d14783756d77cb74331, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4286292992
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5762,7 +5778,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5c944b9c1832f604b8da8a62e76b8b09, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b88453042eba40b499a9f972a34811b4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

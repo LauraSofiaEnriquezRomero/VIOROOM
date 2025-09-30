@@ -1477,7 +1477,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &141705218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9842,7 +9842,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelPopup: {fileID: 2594658537007835478}
-  desactivarInteractors: 1
   tiempoEspera: 30
   generadorFallas: {fileID: 1535207256}
 --- !u!4 &829004153
@@ -16733,7 +16732,6 @@ MonoBehaviour:
   - {fileID: 7929127751666169743}
   - {fileID: 3638445731012420033}
   - {fileID: 5848948930915047957}
-  - {fileID: 8402518134283962719}
   - {fileID: 1760408655336243923}
   - {fileID: 3795917817873677631}
   - {fileID: 7938665963662028799}
@@ -16741,12 +16739,12 @@ MonoBehaviour:
   - {fileID: 6945696554995402705}
   - {fileID: 5036322260260631418}
   - {fileID: 9004234235620692414}
+  - {fileID: 8402518134283962719}
   puntosDeLuz:
   - {fileID: 1235097098}
   - {fileID: 1368533731}
   - {fileID: 771961704}
   - {fileID: 1241251795}
-  - {fileID: 64671299}
   - {fileID: 50702112}
   - {fileID: 205945204}
   - {fileID: 848804712}
@@ -16754,11 +16752,24 @@ MonoBehaviour:
   - {fileID: 526753663}
   - {fileID: 1082199850}
   - {fileID: 82789965}
+  - {fileID: 64671299}
   panelProgreso: {fileID: 2594658537007835478}
   textoProgreso: {fileID: 5761891710943585210}
   OnRecorridoCompleto:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 64671299}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   permitirClickEnHijos: 1
 --- !u!1 &1451002449
 GameObject:
@@ -16854,7 +16865,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1460354663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24646,6 +24657,7 @@ GameObject:
   - component: {fileID: 6332359924404471461}
   - component: {fileID: 6287191128266142105}
   - component: {fileID: 3855925708770414177}
+  - component: {fileID: 6332359924404471462}
   m_Layer: 0
   m_Name: Plano.007
   m_TagString: Untagged
@@ -30297,7 +30309,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2604573773293621795
 Transform:
   m_ObjectHideFlags: 0
@@ -35428,6 +35440,7 @@ GameObject:
   - component: {fileID: 7989606344211329721}
   - component: {fileID: 3960861947359696515}
   - component: {fileID: 1987363864084063020}
+  - component: {fileID: 7989606344211329722}
   m_Layer: 0
   m_Name: Plano.005
   m_TagString: Untagged
@@ -36091,8 +36104,8 @@ Transform:
   m_GameObject: {fileID: 7953304578279415588}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0000010961284, y: 0.0009896155, z: -0.0011839194, w: 0.9999988}
-  m_LocalPosition: {x: 0.19514261, y: 0.007239679, z: -0.038621042}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.1952, y: 0.0086, z: 0.0148}
+  m_LocalScale: {x: 1, y: 1.0172, z: 0.9918}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5103938207607127071}
@@ -41381,6 +41394,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5103938207607127071}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6332359924404471462
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 447451064799100273}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.020011526, y: 0.010860953, z: 0.00015075685}
+  m_Center: {x: 0.0029936417, y: -0.002412709, z: -0.0000440216}
 --- !u!114 &6340217564821880930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44649,10 +44683,10 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2594658537007835478}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 3.27}
-  m_LocalScale: {x: 0.00638548, y: 0.0057856743, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 2.899}
+  m_LocalScale: {x: 0.005108384, y: 0.0046285396, z: 0.8}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3556774597838738268}
   - {fileID: 1583169390}
@@ -44661,10 +44695,10 @@ RectTransform:
   - {fileID: 1623059761}
   - {fileID: 1795356394342300403}
   m_Father: {fileID: 1146949774}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -315.42, y: -261.77}
+  m_AnchoredPosition: {x: -319.61, y: -261.116}
   m_SizeDelta: {x: 616.4167, y: 396.35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7274679123406475235
@@ -47934,6 +47968,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5103938207607127071}
   m_LocalEulerAnglesHint: {x: 0.635, y: 180, z: 0}
+--- !u!65 &7989606344211329722
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4133035471178055316}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.13556224, y: 0.056087524, z: 0.0008333179}
+  m_Center: {x: 0.20416579, y: -0.017321464, z: 0.06512295}
 --- !u!4 &7990620749337947479
 Transform:
   m_ObjectHideFlags: 0
@@ -51185,6 +51240,7 @@ GameObject:
   - component: {fileID: 5560141491143853023}
   - component: {fileID: 5239427286928282658}
   - component: {fileID: 3654330337932329914}
+  - component: {fileID: 8609170460111883089}
   m_Layer: 0
   m_Name: Plano
   m_TagString: Untagged
@@ -51192,6 +51248,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!65 &8609170460111883089
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8609170460111883088}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.116453394, y: 0.054462746, z: 0.00093195145}
+  m_Center: {x: -0.007450279, y: -0.00170545, z: -0.00012068181}
 --- !u!1 &8623888624630455546
 GameObject:
   m_ObjectHideFlags: 0
