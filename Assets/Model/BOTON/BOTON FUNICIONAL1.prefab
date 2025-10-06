@@ -147,7 +147,6 @@ GameObject:
   - component: {fileID: 2689378820181629107}
   - component: {fileID: 8233543661391860034}
   - component: {fileID: 771071188611617740}
-  - component: {fileID: 5544822780897134188}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -275,33 +274,10 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 195.67473, y: 67.05253, z: 157.91202}
   m_Center: {x: -5.6477585, y: 0.17766526, z: 62.96646}
---- !u!114 &5544822780897134188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3323135364495254014}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 402be5ee863c4cd4690230a5ba8cc8af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectsToHide:
-  - {fileID: 0}
-  objectsToShow:
-  - {fileID: 0}
-  showForSeconds: 5
-  sceneToLoad: 
-  loadNextScene: 0
-  onPressed:
-    m_PersistentCalls:
-      m_Calls: []
-  rayLength: 200
 --- !u!1 &4509896080329947025
 GameObject:
   m_ObjectHideFlags: 0

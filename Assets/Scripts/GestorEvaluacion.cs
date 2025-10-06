@@ -125,7 +125,16 @@ private void Awake()
 
     private void SeleccionarDotacion(GameObject seleccion)
     {
+        if (seleccion == null)
+        {
+            Debug.LogWarning("⚠️ SeleccionarDotacion fue llamado con un objeto nulo.");
+            return;
+        }
+
+        Debug.Log($"[Evaluación] → Dotación seleccionada: {seleccion.name}");
         panelDotacion.SetActive(false);
+
+        // 🔹 Enviamos el GameObject directamente
         MostrarResumen(seleccion);
     }
 
@@ -140,7 +149,6 @@ private void Awake()
         panelResumen.SetActive(true);
         Debug.Log("[Evaluación] → Mostrando resumen final");
 
-        // 🔹 Limpiar textos previos
         foreach (Transform t in contenedorResumen)
             Destroy(t.gameObject);
 
@@ -153,25 +161,67 @@ private void Awake()
 
         var fallas = gf.GetFallasActivadas();
 
-        // ✅ Revisamos TODAS las fallas activadas
+        // Listas para agrupar resultados
+        List<string> fallasCorrectas = new List<string>();
+        List<string> fallasNoIdentificadas = new List<string>();
+        List<string> elementosSinFalla = new List<string>();
+
+        // ✅ Clasificar las fallas
         foreach (var falla in fallas)
         {
-            string estado = seleccionesUsuario.Contains(falla.gameObject) ? "Correcto ✅" : "Faltante ⚠️";
-            CrearLineaResumen($"{falla.name} → {estado}");
+            if (falla == null || falla.gameObject == null) continue;
+
+            if (seleccionesUsuario.Contains(falla.gameObject))
+                fallasCorrectas.Add(falla.name);
+            else
+                fallasNoIdentificadas.Add(falla.name);
         }
 
-        // ✅ Revisamos dotación
-        bool aciertoDotacion = (dotacionActiva != null && seleccionDotacion == dotacionActiva.gameObject);
-        CrearLineaResumen($"Dotación seleccionada: {seleccionDotacion.name} → {(aciertoDotacion ? "Correcto ✅" : "Incorrecto ❌")}");
-
-        // ✅ Revisamos selecciones extra que NO eran fallas
+        // ✅ Buscar selecciones incorrectas (no eran fallas)
         foreach (var obj in seleccionesUsuario)
         {
-            bool esFalla = fallas.Exists(f => f.gameObject == obj);
+            if (obj == null) continue;
+            bool esFalla = fallas.Exists(f => f != null && f.gameObject == obj);
             if (!esFalla)
-                CrearLineaResumen($"{obj.name} → Extra ❌");
+                elementosSinFalla.Add(obj.name);
         }
+
+        // 🔹 Sección 1: Fallas correctamente identificadas
+        CrearLineaResumen("✅ Identificó correctamente las siguientes fallas:");
+        if (fallasCorrectas.Count > 0)
+            foreach (var nombre in fallasCorrectas)
+                CrearLineaResumen("   • " + nombre);
+        else
+            CrearLineaResumen("   • Ninguna");
+
+        // 🔹 Sección 2: Fallas no identificadas
+        CrearLineaResumen("\n⚠️ No identificó estas fallas:");
+        if (fallasNoIdentificadas.Count > 0)
+            foreach (var nombre in fallasNoIdentificadas)
+                CrearLineaResumen("   • " + nombre);
+        else
+            CrearLineaResumen("   • Ninguna");
+
+        // 🔹 Sección 3: Elementos sin falla marcados
+        CrearLineaResumen("\n❌ Marcó elementos que no tenían falla:");
+        if (elementosSinFalla.Count > 0)
+            foreach (var nombre in elementosSinFalla)
+                CrearLineaResumen("   • " + nombre);
+        else
+            CrearLineaResumen("   • Ninguno");
+
+        // 🔹 Evaluación de dotación
+        string nombreDotacion = (seleccionDotacion != null) ? seleccionDotacion.name : "(objeto eliminado)";
+        bool aciertoDotacion = (dotacionActiva != null && seleccionDotacion == dotacionActiva.gameObject);
+
+        string resultadoDotacion = aciertoDotacion
+            ? $"\n✅ Seleccionó correctamente la dotación con falla: {nombreDotacion}"
+            : $"\n❌ Seleccionó una dotación incorrecta: {nombreDotacion}";
+
+        CrearLineaResumen(resultadoDotacion);
     }
+
+
 
     private void CrearLineaResumen(string texto)
     {
